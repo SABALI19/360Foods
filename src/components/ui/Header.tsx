@@ -1,6 +1,12 @@
+import { productCategories, type ProductCategory } from '../../data/catalog'
 import Cart from './cart/Cart'
 
-const categories = ['Fresh Produce', 'Pantry', 'Bakery', 'Drinks']
+type HeaderProps = {
+  activeCategory: ProductCategory
+  cartCount: number
+  cartTotal: string
+  onCategoryChange: (category: ProductCategory) => void
+}
 
 function MenuIcon() {
   return (
@@ -16,7 +22,12 @@ function MenuIcon() {
   )
 }
 
-function Header() {
+function Header({
+  activeCategory,
+  cartCount,
+  cartTotal,
+  onCategoryChange,
+}: HeaderProps) {
   return (
     <header className="w-full overflow-hidden border border-[rgba(15,23,15,0.08)] bg-[rgba(5,189,88,0.96)] shadow-[0_22px_50px_rgba(20,33,20,0.08)]">
       <div className="grid min-h-[138px] grid-cols-1 place-items-center gap-5 px-[18px] py-[22px] md:grid-cols-[auto_1fr_auto] md:items-center md:gap-6 md:px-[42px] md:pt-6 md:pb-[18px]">
@@ -56,7 +67,7 @@ function Header() {
         </div>
 
         <div className="hidden md:block">
-          <Cart total="$38.95" count={2} />
+          <Cart total={cartTotal} count={cartCount} />
         </div>
 
         <div className="flex w-full items-center justify-between md:hidden">
@@ -68,7 +79,7 @@ function Header() {
             <MenuIcon />
           </button>
 
-          <Cart total="$38.95" count={2} />
+          <Cart total={cartTotal} count={cartCount} />
         </div>
       </div>
 
@@ -76,19 +87,19 @@ function Header() {
         className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-4 pt-4 pb-[18px] md:gap-x-[clamp(14px,3vw,42px)] md:px-6"
         aria-label="Primary"
       >
-        {categories.map((category, index) => (
-          <a
+        {productCategories.map((category) => (
+          <button
             key={category}
-            href="/"
+            type="button"
             className={`relative px-0.5 py-1 text-base font-medium no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2e7d32] ${
-              index === 0
+              activeCategory === category
                 ? "text-[#2e7d32] after:absolute after:right-0 after:bottom-[-1px] after:left-0 after:h-0.5 after:rounded-full after:bg-current after:content-['']"
                 : "text-[rgba(17,17,17,0.84)] hover:text-[#2e7d32] hover:after:absolute hover:after:right-0 hover:after:bottom-[-1px] hover:after:left-0 hover:after:h-0.5 hover:after:rounded-full hover:after:bg-current hover:after:content-['']"
             }`}
-            onClick={(event) => event.preventDefault()}
+            onClick={() => onCategoryChange(category)}
           >
             {category}
-          </a>
+          </button>
         ))}
       </nav>
     </header>
