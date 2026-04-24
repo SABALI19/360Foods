@@ -17,6 +17,8 @@ type CheckoutProps = {
   subtotal: number
 }
 
+type DeliveryMethod = 'delivery' | 'pickup'
+
 function formatCurrency(value: number) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -28,14 +30,21 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
   const orderedProducts = products.filter(
     (product) => (cartItems[product.id] ?? 0) > 0,
   )
-  const deliveryFee = orderedProducts.length > 0 ? 4.5 : 0
-  const tax = subtotal * 0.08
-  const total = subtotal + deliveryFee + tax
+  const [deliveryMethod, setDeliveryMethod] =
+    useState<DeliveryMethod>('delivery')
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterTouched, setNewsletterTouched] = useState(false)
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
 
+  const deliveryFee =
+    orderedProducts.length === 0
+      ? 0
+      : deliveryMethod === 'delivery'
+        ? 4.5
+        : 0
+  const tax = subtotal * 0.08
+  const total = subtotal + deliveryFee + tax
   const trimmedEmail = newsletterEmail.trim()
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
 
@@ -107,11 +116,23 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 <button
                   type="button"
-                  className="rounded-[10px] border border-[#58a45f] bg-[#f4fbf2] px-3 py-3 text-left shadow-[inset_0_0_0_1px_rgba(47,127,55,0.05)] transition hover:border-[#2f7f37]"
+                  onClick={() => setDeliveryMethod('delivery')}
+                  aria-pressed={deliveryMethod === 'delivery'}
+                  className={`rounded-[10px] px-3 py-3 text-left transition ${
+                    deliveryMethod === 'delivery'
+                      ? 'border border-[#58a45f] bg-[#f4fbf2] shadow-[inset_0_0_0_1px_rgba(47,127,55,0.05)]'
+                      : 'border border-[#d9e2ce] bg-white hover:border-[#9fbea0]'
+                  }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex gap-2.5">
-                      <Truck className="mt-0.5 h-4 w-4 text-[#2f7f37]" />
+                      <Truck
+                        className={`mt-0.5 h-4 w-4 ${
+                          deliveryMethod === 'delivery'
+                            ? 'text-[#2f7f37]'
+                            : 'text-[#4d5648]'
+                        }`}
+                      />
                       <div>
                         <p className="text-[0.82rem] font-semibold text-[#203020]">
                           Standard Delivery
@@ -121,25 +142,48 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
                         </p>
                       </div>
                     </div>
-                    <span className="mt-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#2f7f37] text-[#2f7f37]">
-                      <Check className="h-2.5 w-2.5" strokeWidth={2.4} />
-                    </span>
+                    {deliveryMethod === 'delivery' ? (
+                      <span className="mt-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#2f7f37] text-[#2f7f37]">
+                        <Check className="h-2.5 w-2.5" strokeWidth={2.4} />
+                      </span>
+                    ) : null}
                   </div>
                 </button>
 
                 <button
                   type="button"
-                  className="rounded-[10px] border border-[#d9e2ce] bg-white px-3 py-3 text-left transition hover:border-[#9fbea0]"
+                  onClick={() => setDeliveryMethod('pickup')}
+                  aria-pressed={deliveryMethod === 'pickup'}
+                  className={`rounded-[10px] px-3 py-3 text-left transition ${
+                    deliveryMethod === 'pickup'
+                      ? 'border border-[#58a45f] bg-[#f4fbf2] shadow-[inset_0_0_0_1px_rgba(47,127,55,0.05)]'
+                      : 'border border-[#d9e2ce] bg-white hover:border-[#9fbea0]'
+                  }`}
                 >
-                  <div className="flex items-start gap-2.5">
-                    <Store className="mt-0.5 h-4 w-4 text-[#4d5648]" />
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-2.5">
+                      <Store
+                        className={`mt-0.5 h-4 w-4 ${
+                          deliveryMethod === 'pickup'
+                            ? 'text-[#2f7f37]'
+                            : 'text-[#4d5648]'
+                        }`}
+                      />
+                      <div>
+                        <p className="text-[0.82rem] font-semibold text-[#203020]">
+                          Local Pickup
+                        </p>
+                        <p className="mt-1 text-[0.72rem] text-[#6a705f]">
+                          Ready in 2 hours
+                        </p>
+                      </div>
+                    </div>
+                    {deliveryMethod === 'pickup' ? (
+                      <span className="mt-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#2f7f37] text-[#2f7f37]">
+                        <Check className="h-2.5 w-2.5" strokeWidth={2.4} />
+                      </span>
+                    ) : null}
                     <div>
-                      <p className="text-[0.82rem] font-semibold text-[#203020]">
-                        Local Pickup
-                      </p>
-                      <p className="mt-1 text-[0.72rem] text-[#6a705f]">
-                        Ready in 2 hours
-                      </p>
                     </div>
                   </div>
                 </button>
@@ -290,7 +334,11 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
               </div>
               <div className="flex items-center justify-between">
                 <span>Delivery</span>
-                <span>{deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)}</span>
+                <span>
+                  {orderedProducts.length === 0 || deliveryMethod === 'pickup'
+                    ? 'FREE'
+                    : formatCurrency(deliveryFee)}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Tax</span>
