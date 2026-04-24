@@ -1,10 +1,13 @@
+import { useState } from 'react'
 import {
   Check,
   CreditCard,
   LockKeyhole,
+  Mail,
   MapPinHouse,
   Store,
   Truck,
+  X,
 } from 'lucide-react'
 import type { Product } from '../../../data/catalog'
 
@@ -28,9 +31,44 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
   const deliveryFee = orderedProducts.length > 0 ? 4.5 : 0
   const tax = subtotal * 0.08
   const total = subtotal + deliveryFee + tax
+  const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [newsletterTouched, setNewsletterTouched] = useState(false)
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
+
+  const trimmedEmail = newsletterEmail.trim()
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
+
+  function handleCompleteOrder() {
+    setNewsletterOpenState(true)
+  }
+
+  function setNewsletterOpenState(isOpen: boolean) {
+    setIsNewsletterOpen(isOpen)
+    if (!isOpen) {
+      setNewsletterTouched(false)
+    }
+  }
+
+  function handleNewsletterSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setNewsletterTouched(true)
+
+    if (!isEmailValid) {
+      return
+    }
+
+    setNewsletterSubscribed(true)
+  }
+
+  function handleSkipNewsletter() {
+    setNewsletterSubscribed(false)
+    setNewsletterEmail('')
+    setNewsletterOpenState(false)
+  }
 
   return (
-    <section className="w-full px-4 py-8 md:px-8 md:py-10">
+    <section className="relative w-full px-4 py-8 md:px-8 md:py-10">
       <div className="mx-auto flex w-full max-w-[1080px] flex-col gap-6 rounded-[28px] bg-[linear-gradient(180deg,#f6fbef_0%,#fdfef8_100%)] px-4 py-6 shadow-[0_20px_60px_rgba(64,92,46,0.08)] md:px-8 md:py-8">
         <div className="flex items-center justify-center gap-5 md:gap-14">
           {[
@@ -270,6 +308,7 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
             <button
               type="button"
               disabled={orderedProducts.length === 0}
+              onClick={handleCompleteOrder}
               className="mt-5 flex w-full items-center justify-center gap-2 rounded-[10px] bg-[#2f7f37] px-4 py-3 text-[0.82rem] font-semibold text-white transition hover:bg-[#286d30] disabled:cursor-not-allowed disabled:bg-[#a6bba4]"
             >
               <LockKeyhole className="h-4 w-4" />
@@ -286,6 +325,102 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
           </aside>
         </div>
       </div>
+
+      {isNewsletterOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#101710]/45 px-4 backdrop-blur-[2px]">
+          <div className="w-full max-w-[440px] rounded-[24px] bg-white p-5 shadow-[0_24px_70px_rgba(16,23,16,0.22)] md:p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#edf7eb] text-[#2f7f37]">
+                  <Mail className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#2f7f37]">
+                    Stay Updated
+                  </p>
+                  <h3 className="mt-1 text-[1.2rem] font-semibold text-[#182118]">
+                    Receive newsletters by email?
+                  </h3>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setNewsletterOpenState(false)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#dde8d8] text-[#667060] transition hover:border-[#b9cbb4] hover:text-[#2f7f37]"
+                aria-label="Close newsletter modal"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {newsletterSubscribed ? (
+              <div className="mt-5 rounded-[18px] bg-[#f4fbf2] px-4 py-5 text-center">
+                <span className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#2f7f37] text-white">
+                  <Check className="h-5 w-5" strokeWidth={2.5} />
+                </span>
+                <h4 className="mt-3 text-[1rem] font-semibold text-[#1d241d]">
+                  You&apos;re subscribed
+                </h4>
+                <p className="mt-2 text-[0.84rem] leading-6 text-[#5f6756]">
+                  We&apos;ll send product updates, newsletters, and special offers to{' '}
+                  <span className="font-medium text-[#2f7f37]">{trimmedEmail}</span>.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleSkipNewsletter}
+                  className="mt-4 inline-flex items-center justify-center rounded-[10px] bg-[#2f7f37] px-4 py-2.5 text-[0.82rem] font-semibold text-white transition hover:bg-[#286d30]"
+                >
+                  Continue
+                </button>
+              </div>
+            ) : (
+              <form className="mt-5" onSubmit={handleNewsletterSubmit}>
+                <p className="text-[0.84rem] leading-6 text-[#5f6756]">
+                  Enter your email if you&apos;d like newsletters, new menu alerts, and
+                  special updates from 360 Foods.
+                </p>
+
+                <label className="mt-4 block">
+                  <span className="mb-1.5 block text-[0.7rem] font-medium uppercase tracking-[0.14em] text-[#6e7565]">
+                    Email Address
+                  </span>
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={(event) => setNewsletterEmail(event.target.value)}
+                    onBlur={() => setNewsletterTouched(true)}
+                    placeholder="you@example.com"
+                    className="w-full rounded-[12px] border border-[#d7e3d1] bg-[#f7fbf4] px-4 py-3 text-[0.86rem] text-[#1f261e] outline-none transition placeholder:text-[#98a18f] focus:border-[#2f7f37] focus:bg-white"
+                  />
+                </label>
+
+                {newsletterTouched && !isEmailValid ? (
+                  <p className="mt-2 text-[0.74rem] text-[#b63c2f]">
+                    Enter a valid email address to subscribe.
+                  </p>
+                ) : null}
+
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <button
+                    type="submit"
+                    className="inline-flex flex-1 items-center justify-center rounded-[12px] bg-[#2f7f37] px-4 py-3 text-[0.84rem] font-semibold text-white transition hover:bg-[#286d30]"
+                  >
+                    Subscribe
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSkipNewsletter}
+                    className="inline-flex flex-1 items-center justify-center rounded-[12px] border border-[#d7e3d1] px-4 py-3 text-[0.84rem] font-semibold text-[#4e5849] transition hover:border-[#b8c9b4] hover:text-[#2f7f37]"
+                  >
+                    No thanks
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      ) : null}
     </section>
   )
 }
