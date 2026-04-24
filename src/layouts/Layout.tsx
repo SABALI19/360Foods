@@ -8,6 +8,7 @@ type LayoutProps = {
   cartCount: number
   cartTotal: string
   children?: ReactNode
+  onCartClick: () => void
   onCategoryChange: (category: ProductCategory) => void
 }
 
@@ -16,6 +17,7 @@ function Layout({
   cartCount,
   cartTotal,
   children,
+  onCartClick,
   onCategoryChange,
 }: LayoutProps) {
   return (
@@ -24,6 +26,7 @@ function Layout({
         activeCategory={activeCategory}
         cartCount={cartCount}
         cartTotal={cartTotal}
+        onCartClick={onCartClick}
         onCategoryChange={onCategoryChange}
       />
       <main className="w-full">{children}</main>

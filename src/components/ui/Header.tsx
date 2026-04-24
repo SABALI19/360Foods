@@ -5,6 +5,7 @@ type HeaderProps = {
   activeCategory: ProductCategory
   cartCount: number
   cartTotal: string
+  onCartClick: () => void
   onCategoryChange: (category: ProductCategory) => void
 }
 
@@ -26,6 +27,7 @@ function Header({
   activeCategory,
   cartCount,
   cartTotal,
+  onCartClick,
   onCategoryChange,
 }: HeaderProps) {
   return (
@@ -67,7 +69,7 @@ function Header({
         </div>
 
         <div className="hidden md:block">
-          <Cart total={cartTotal} count={cartCount} />
+          <Cart total={cartTotal} count={cartCount} onClick={onCartClick} />
         </div>
 
         <div className="flex w-full items-center justify-between md:hidden">
@@ -79,7 +81,7 @@ function Header({
             <MenuIcon />
           </button>
 
-          <Cart total={cartTotal} count={cartCount} />
+          <Cart total={cartTotal} count={cartCount} onClick={onCartClick} />
         </div>
       </div>
 

@@ -1,13 +1,16 @@
 import { ShoppingBasketIcon } from 'lucide-react'
 
 type CartProps = {
+  onClick?: () => void
   total: string
   count: number
 }
 
-function Cart({ total, count }: CartProps) {
+function Cart({ onClick, total, count }: CartProps) {
   return (
-    <div
+    <button
+      type="button"
+      onClick={onClick}
       className="inline-flex items-center gap-3.5 text-[#111111]"
       aria-label={`${count} items in cart, total ${total}`}
     >
@@ -18,7 +21,7 @@ function Cart({ total, count }: CartProps) {
           {count}
         </span>
       </span>
-    </div>
+    </button>
   )
 }
 
