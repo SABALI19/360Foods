@@ -13,6 +13,7 @@ import type { Product } from '../../../data/catalog'
 
 type CheckoutProps = {
   cartItems: Record<string, number>
+  onOrderComplete: () => void
   products: Product[]
   subtotal: number
 }
@@ -27,7 +28,12 @@ function formatCurrency(value: number) {
   }).format(value)
 }
 
-function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
+function Checkout({
+  cartItems,
+  onOrderComplete,
+  products,
+  subtotal,
+}: CheckoutProps) {
   const orderedProducts = products.filter(
     (product) => (cartItems[product.id] ?? 0) > 0,
   )
@@ -76,6 +82,12 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
     setNewsletterSubscribed(false)
     setNewsletterEmail('')
     setNewsletterOpenState(false)
+    onOrderComplete()
+  }
+
+  function handleNewsletterContinue() {
+    setNewsletterOpenState(false)
+    onOrderComplete()
   }
 
   return (
@@ -464,7 +476,7 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
                 </p>
                 <button
                   type="button"
-                  onClick={handleSkipNewsletter}
+                  onClick={handleNewsletterContinue}
                   className="mt-4 inline-flex items-center justify-center rounded-[10px] bg-[#2f7f37] px-4 py-2.5 text-[0.82rem] font-semibold text-white transition hover:bg-[#286d30]"
                 >
                   Continue

@@ -44,6 +44,11 @@ function App() {
     setView('checkout')
   }
 
+  function handleOrderComplete() {
+    setCartItems({})
+    setView('shop')
+  }
+
   return (
     <Layout
       activeCategory={activeCategory}
@@ -55,6 +60,7 @@ function App() {
       {view === 'checkout' ? (
         <Checkout
           cartItems={cartItems}
+          onOrderComplete={handleOrderComplete}
           products={products}
           subtotal={cartTotalValue}
         />
