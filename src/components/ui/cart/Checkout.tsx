@@ -18,6 +18,7 @@ type CheckoutProps = {
 }
 
 type DeliveryMethod = 'delivery' | 'pickup'
+type PaymentMethod = 'apple-pay' | 'google-pay' | 'card'
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat('en-US', {
@@ -32,6 +33,7 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
   )
   const [deliveryMethod, setDeliveryMethod] =
     useState<DeliveryMethod>('delivery')
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card')
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterTouched, setNewsletterTouched] = useState(false)
@@ -205,33 +207,76 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
               <div className="mt-3 grid gap-3 md:grid-cols-2">
                 <button
                   type="button"
-                  className="flex items-center justify-center gap-2 rounded-[10px] border border-[#d9e2ce] bg-white px-3 py-3 text-[0.8rem] font-medium text-[#2a2f28]"
+                  onClick={() => setPaymentMethod('apple-pay')}
+                  aria-pressed={paymentMethod === 'apple-pay'}
+                  className={`flex items-center justify-center gap-2 rounded-[10px] px-3 py-3 text-[0.8rem] font-medium transition ${
+                    paymentMethod === 'apple-pay'
+                      ? 'border border-[#58a45f] bg-[#f4fbf2] text-[#203020]'
+                      : 'border border-[#d9e2ce] bg-white text-[#2a2f28] hover:border-[#9fbea0]'
+                  }`}
                 >
-                  <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#b8c5ab] text-[0.48rem] font-semibold">
+                  <span
+                    className={`inline-flex h-4 w-4 items-center justify-center rounded-full text-[0.48rem] font-semibold ${
+                      paymentMethod === 'apple-pay'
+                        ? 'border border-[#2f7f37] text-[#2f7f37]'
+                        : 'border border-[#b8c5ab]'
+                    }`}
+                  >
                     AP
                   </span>
                   Apple Pay
                 </button>
                 <button
                   type="button"
-                  className="flex items-center justify-center gap-2 rounded-[10px] border border-[#d9e2ce] bg-white px-3 py-3 text-[0.8rem] font-medium text-[#2a2f28]"
+                  onClick={() => setPaymentMethod('google-pay')}
+                  aria-pressed={paymentMethod === 'google-pay'}
+                  className={`flex items-center justify-center gap-2 rounded-[10px] px-3 py-3 text-[0.8rem] font-medium transition ${
+                    paymentMethod === 'google-pay'
+                      ? 'border border-[#58a45f] bg-[#f4fbf2] text-[#203020]'
+                      : 'border border-[#d9e2ce] bg-white text-[#2a2f28] hover:border-[#9fbea0]'
+                  }`}
                 >
-                  <span className="inline-flex h-4 w-4 items-center justify-center rounded-[4px] border border-[#b8c5ab] text-[0.55rem]">
+                  <span
+                    className={`inline-flex h-4 w-4 items-center justify-center rounded-[4px] text-[0.55rem] ${
+                      paymentMethod === 'google-pay'
+                        ? 'border border-[#2f7f37] text-[#2f7f37]'
+                        : 'border border-[#b8c5ab]'
+                    }`}
+                  >
                     G
                   </span>
                   Google Pay
                 </button>
               </div>
 
-              <div className="mt-4 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setPaymentMethod('card')}
+                aria-pressed={paymentMethod === 'card'}
+                className={`mt-4 flex w-full items-center gap-3 rounded-[10px] px-3 py-3 transition ${
+                  paymentMethod === 'card'
+                    ? 'border border-[#58a45f] bg-[#f4fbf2]'
+                    : 'border border-transparent hover:border-[#d9e2ce]'
+                }`}
+              >
                 <span className="h-px flex-1 bg-[#e4eadc]"></span>
-                <span className="text-[0.68rem] uppercase tracking-[0.18em] text-[#8a917d]">
+                <span
+                  className={`text-[0.68rem] uppercase tracking-[0.18em] ${
+                    paymentMethod === 'card'
+                      ? 'font-semibold text-[#2f7f37]'
+                      : 'text-[#8a917d]'
+                  }`}
+                >
                   Or pay with card
                 </span>
                 <span className="h-px flex-1 bg-[#e4eadc]"></span>
-              </div>
+              </button>
 
-              <div className="mt-4 space-y-3">
+              <div
+                className={`mt-4 space-y-3 ${
+                  paymentMethod === 'card' ? '' : 'opacity-50'
+                }`}
+              >
                 <label className="block">
                   <span className="mb-1.5 block text-[0.68rem] font-medium uppercase tracking-[0.12em] text-[#7f8674]">
                     Card Number
@@ -240,6 +285,7 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
                     <input
                       type="text"
                       placeholder="0000 0000 0000 0000"
+                      disabled={paymentMethod !== 'card'}
                       className="w-full bg-transparent text-[0.82rem] text-[#1f261e] outline-none placeholder:text-[#a6ac9b]"
                     />
                     <CreditCard className="h-4 w-4 text-[#7f8674]" />
@@ -254,6 +300,7 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
                     <input
                       type="text"
                       placeholder="MM/YY"
+                      disabled={paymentMethod !== 'card'}
                       className="w-full rounded-[10px] bg-[#f4f8ee] px-3 py-2.5 text-[0.82rem] text-[#1f261e] outline-none placeholder:text-[#a6ac9b]"
                     />
                   </label>
@@ -265,6 +312,7 @@ function Checkout({ cartItems, products, subtotal }: CheckoutProps) {
                     <input
                       type="text"
                       placeholder="123"
+                      disabled={paymentMethod !== 'card'}
                       className="w-full rounded-[10px] bg-[#f4f8ee] px-3 py-2.5 text-[0.82rem] text-[#1f261e] outline-none placeholder:text-[#a6ac9b]"
                     />
                   </label>
