@@ -33,6 +33,9 @@ function Header({
   onCategoryChange,
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
+  const remainingCategories = productCategories.filter(
+    (category) => category !== 'All',
+  )
 
   useEffect(() => {
     function handleScroll() {
@@ -44,6 +47,14 @@ function Header({
 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  function getCategoryButtonClass(category: ProductCategory) {
+    return `relative flex-none whitespace-nowrap px-0.5 py-1 text-base font-medium no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2e7d32] ${
+      activeCategory === category
+        ? "text-[#2e7d32] after:absolute after:right-0 after:bottom-[-1px] after:left-0 after:h-0.5 after:rounded-full after:bg-current after:content-['']"
+        : "text-[rgba(17,17,17,0.84)] hover:text-[#2e7d32] hover:after:absolute hover:after:right-0 hover:after:bottom-[-1px] hover:after:left-0 hover:after:h-0.5 hover:after:rounded-full hover:after:bg-current hover:after:content-['']"
+    }`
+  }
 
   return (
     <header className="sticky top-0 z-40 w-full overflow-hidden border border-[rgba(15,23,15,0.08)] bg-[rgba(5,189,88,0.96)] shadow-[0_22px_50px_rgba(20,33,20,0.08)] transition-all duration-300">
@@ -93,7 +104,37 @@ function Header({
       </div>
 
       <nav
-        className={`flex flex-nowrap items-center justify-start gap-x-5 overflow-x-auto overscroll-x-contain border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-4 transition-all duration-300 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] md:justify-center md:gap-x-[clamp(14px,3vw,42px)] md:px-6 [&::-webkit-scrollbar]:hidden ${
+        className={`flex items-center border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] transition-all duration-300 md:hidden ${
+          isScrolled ? 'pt-2 pb-3' : 'pt-4 pb-[18px]'
+        }`}
+        aria-label="Primary"
+      >
+        <div className="relative z-10 flex-none bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-4 pr-5 shadow-[12px_0_18px_rgba(237,243,235,0.92)]">
+          <button
+            type="button"
+            className={getCategoryButtonClass('All')}
+            onClick={() => onCategoryChange('All')}
+          >
+            All
+          </button>
+        </div>
+
+        <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-x-5 overflow-x-auto overscroll-x-contain pr-4 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {remainingCategories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={getCategoryButtonClass(category)}
+              onClick={() => onCategoryChange(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <nav
+        className={`hidden flex-nowrap items-center justify-center gap-x-[clamp(14px,3vw,42px)] overflow-x-auto overscroll-x-contain border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-6 transition-all duration-300 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] md:flex [&::-webkit-scrollbar]:hidden ${
           isScrolled ? 'pt-2 pb-3' : 'pt-4 pb-[18px]'
         }`}
         aria-label="Primary"
@@ -102,11 +143,7 @@ function Header({
           <button
             key={category}
             type="button"
-            className={`relative flex-none whitespace-nowrap px-0.5 py-1 text-base font-medium no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2e7d32] ${
-              activeCategory === category
-                ? "text-[#2e7d32] after:absolute after:right-0 after:bottom-[-1px] after:left-0 after:h-0.5 after:rounded-full after:bg-current after:content-['']"
-                : "text-[rgba(17,17,17,0.84)] hover:text-[#2e7d32] hover:after:absolute hover:after:right-0 hover:after:bottom-[-1px] hover:after:left-0 hover:after:h-0.5 hover:after:rounded-full hover:after:bg-current hover:after:content-['']"
-            }`}
+            className={getCategoryButtonClass(category)}
             onClick={() => onCategoryChange(category)}
           >
             {category}

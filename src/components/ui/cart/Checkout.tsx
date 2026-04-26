@@ -92,7 +92,7 @@ function Checkout({
 
   return (
     <section className="relative w-full px-4 py-8 md:px-8 md:py-10">
-      <div className="mx-auto flex w-full max-w-[1080px] flex-col gap-6 rounded-[28px] bg-[linear-gradient(180deg,#f6fbef_0%,#fdfef8_100%)] px-4 py-6 shadow-[0_20px_60px_rgba(64,92,46,0.08)] md:px-8 md:py-8">
+      <div className="mx-auto flex w-full max-w-[1080px] flex-col gap-6  bg-[linear-gradient(180deg,#f6fbef_0%,#fdfef8_100%)] px-4 py-6 shadow-[0_20px_60px_rgba(64,92,46,0.08)] md:px-8 md:py-8">
         <div className="flex items-center justify-center gap-5 md:gap-14">
           {[
             { number: 1, label: 'Cart', active: true },
@@ -102,7 +102,7 @@ function Checkout({
             <div key={step.label} className="flex items-center gap-5 md:gap-14">
               <div className="flex flex-col items-center gap-1.5">
                 <span
-                  className={`inline-flex h-6 w-6 items-center justify-center rounded-md text-[0.72rem] font-semibold ${
+                  className={`inline-flex h-6 w-6 items-center justify-center  text-[0.72rem] font-semibold ${
                     step.active
                       ? 'bg-[#2f7f37] text-white'
                       : 'bg-[#d9dfcf] text-[#6e7565]'
@@ -123,7 +123,7 @@ function Checkout({
 
         <div className="grid gap-5 lg:grid-cols-[1.35fr_0.85fr]">
           <div className="space-y-4">
-            <div className="rounded-[14px] border border-[#dce7d2] bg-white/85 p-4 shadow-[0_8px_24px_rgba(47,127,55,0.04)]">
+            <div className=" border border-[#dce7d2] bg-white/85 p-4 shadow-[0_8px_24px_rgba(47,127,55,0.04)]">
               <h2 className="text-[1.02rem] font-semibold text-[#1d241d]">
                 Delivery Method
               </h2>
@@ -132,13 +132,13 @@ function Checkout({
                   type="button"
                   onClick={() => setDeliveryMethod('delivery')}
                   aria-pressed={deliveryMethod === 'delivery'}
-                  className={`rounded-[10px] px-3 py-3 text-left transition ${
+                  className={`rounded- px-3 py-3 text-left transition ${
                     deliveryMethod === 'delivery'
                       ? 'border border-[#58a45f] bg-[#f4fbf2] shadow-[inset_0_0_0_1px_rgba(47,127,55,0.05)]'
                       : 'border border-[#d9e2ce] bg-white hover:border-[#9fbea0]'
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start justify-between gap-8">
                     <div className="flex gap-2.5">
                       <Truck
                         className={`mt-0.5 h-4 w-4 ${
@@ -168,7 +168,7 @@ function Checkout({
                   type="button"
                   onClick={() => setDeliveryMethod('pickup')}
                   aria-pressed={deliveryMethod === 'pickup'}
-                  className={`rounded-[10px] px-3 py-3 text-left transition ${
+                  className={` px-3 py-3 text-left transition ${
                     deliveryMethod === 'pickup'
                       ? 'border border-[#58a45f] bg-[#f4fbf2] shadow-[inset_0_0_0_1px_rgba(47,127,55,0.05)]'
                       : 'border border-[#d9e2ce] bg-white hover:border-[#9fbea0]'
