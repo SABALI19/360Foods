@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import {
+  ArrowRight,
   Check,
+  CircleHelp,
   CreditCard,
   LockKeyhole,
   Mail,
   MapPinHouse,
+  PackageCheck,
   Store,
   Truck,
   X,
@@ -34,12 +37,16 @@ function Checkout({
   products,
   subtotal,
 }: CheckoutProps) {
+  const [orderId] = useState(() =>
+    Math.floor(10000000 + Math.random() * 90000000).toString(),
+  )
   const orderedProducts = products.filter(
     (product) => (cartItems[product.id] ?? 0) > 0,
   )
   const [deliveryMethod, setDeliveryMethod] =
     useState<DeliveryMethod>('delivery')
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card')
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false)
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false)
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterTouched, setNewsletterTouched] = useState(false)
@@ -53,18 +60,20 @@ function Checkout({
         : 0
   const tax = subtotal * 0.08
   const total = subtotal + deliveryFee + tax
+  const itemCount = orderedProducts.reduce(
+    (count, product) => count + (cartItems[product.id] ?? 0),
+    0,
+  )
   const trimmedEmail = newsletterEmail.trim()
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)
 
   function handleCompleteOrder() {
-    setNewsletterOpenState(true)
+    setIsReceiptOpen(true)
   }
 
-  function setNewsletterOpenState(isOpen: boolean) {
-    setIsNewsletterOpen(isOpen)
-    if (!isOpen) {
-      setNewsletterTouched(false)
-    }
+  function handleReturnToShop() {
+    setIsReceiptOpen(false)
+    setIsNewsletterOpen(true)
   }
 
   function handleNewsletterSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -81,12 +90,12 @@ function Checkout({
   function handleSkipNewsletter() {
     setNewsletterSubscribed(false)
     setNewsletterEmail('')
-    setNewsletterOpenState(false)
+    setIsNewsletterOpen(false)
     onOrderComplete()
   }
 
   function handleNewsletterContinue() {
-    setNewsletterOpenState(false)
+    setIsNewsletterOpen(false)
     onOrderComplete()
   }
 
@@ -434,6 +443,176 @@ function Checkout({
         </div>
       </div>
 
+      {isReceiptOpen ? (
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#101710]/45 px-4 py-6 backdrop-blur-[2px] md:py-8">
+          <div className="w-full max-w-[620px] overflow-hidden rounded-[16px] bg-white shadow-[0_30px_90px_rgba(16,23,16,0.28)]">
+            <div className="flex items-center justify-between border-b border-b-[#edf1e8] px-5 py-4 md:px-7">
+              <h3 className="text-[1.2rem] font-bold text-[#101510]">
+                Checkout
+              </h3>
+              <div className="flex items-center gap-3 text-[#6c6f75]">
+                <CircleHelp className="h-5 w-5" />
+                <PackageCheck className="h-5 w-5" />
+              </div>
+            </div>
+
+            <div className="px-5 py-7 md:px-8 md:py-9">
+              <div className="text-center">
+                <span className="mx-auto inline-flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[#e2f6e9] text-[#047a36]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#047a36] text-white">
+                    <Check className="h-6 w-6" strokeWidth={3} />
+                  </span>
+                </span>
+                <h4 className="mt-6 text-[clamp(1.8rem,6vw,2.5rem)] leading-tight font-bold text-[#101510]">
+                  Thanks for your patronage
+                </h4>
+                <p className="mt-2 text-[0.98rem] text-[#626262]">
+                  Order #{orderId} has been confirmed.
+                </p>
+              </div>
+
+              <div className="mx-auto mt-8 grid max-w-[480px] grid-cols-[auto_1fr_auto_1fr_auto] items-center">
+                <div className="flex flex-col items-center gap-2">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#16c767] text-white">
+                    <Check className="h-4 w-4" strokeWidth={2.7} />
+                  </span>
+                  <span className="text-[0.82rem] font-semibold text-[#047a36]">
+                    Ordered
+                  </span>
+                </div>
+                <span className="mb-7 h-px bg-[#e3e5e2]"></span>
+                <div className="flex flex-col items-center gap-2">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#d9f4e5] text-[#047a36]">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#047a36] text-white">
+                      <PackageCheck className="h-4 w-4" />
+                    </span>
+                  </span>
+                  <span className="text-[0.82rem] font-semibold text-[#047a36]">
+                    Processing
+                  </span>
+                </div>
+                <span className="mb-7 h-px bg-[#e3e5e2]"></span>
+                <div className="flex flex-col items-center gap-2">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#e6e6e6] text-[#616161]">
+                    <Truck className="h-4 w-4" />
+                  </span>
+                  <span className="text-[0.82rem] font-semibold text-[#616161]">
+                    Shipped
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-8 overflow-hidden rounded-[12px] bg-[#f1f1f2]">
+                <div className="flex items-center justify-between bg-[#e9e9ea] px-5 py-4">
+                  <p className="text-[0.78rem] font-bold uppercase tracking-[0.18em] text-[#565656]">
+                    Summary
+                  </p>
+                  <p className="text-[0.82rem] font-bold uppercase tracking-[0.08em] text-[#565656]">
+                    {itemCount} {itemCount === 1 ? 'Item' : 'Items'}
+                  </p>
+                </div>
+
+                <div className="space-y-5 px-5 py-5">
+                  {orderedProducts.map((product) => {
+                    const quantity = cartItems[product.id] ?? 0
+                    return (
+                      <div
+                        key={product.id}
+                        className="grid grid-cols-[64px_1fr_auto] items-center gap-4"
+                      >
+                        <div className="h-16 w-16 overflow-hidden rounded-[8px] bg-[#111111]">
+                          {product.imageSrc ? (
+                            <img
+                              src={product.imageSrc}
+                              alt={product.imageAlt}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center text-[0.62rem] text-white">
+                              No image
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate text-[0.95rem] font-semibold text-[#111111]">
+                            {product.name}
+                          </p>
+                          <span className="mt-1 inline-flex rounded-full bg-[#d8f3df] px-2.5 py-0.5 text-[0.62rem] font-bold uppercase text-[#047a36]">
+                            Qty {quantity}
+                          </span>
+                        </div>
+                        <p className="text-[0.9rem] font-bold text-[#111111]">
+                          {formatCurrency(product.price * quantity)}
+                        </p>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                <div className="flex items-center justify-between bg-[#e8e8e9] px-5 py-5">
+                  <span className="text-[1rem] text-[#666666]">
+                    Total Amount
+                  </span>
+                  <span className="text-[1.75rem] font-bold text-[#047a36]">
+                    {formatCurrency(total)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-7 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-[12px] border border-[#e3e5e2] px-5 py-4">
+                  <p className="text-[0.76rem] font-bold uppercase tracking-[0.14em] text-[#626262]">
+                    Shipping To
+                  </p>
+                  <p className="mt-3 text-[0.9rem] leading-6 text-[#202020]">
+                    360 Foods Customer
+                    <br />
+                    {deliveryMethod === 'delivery'
+                      ? 'Standard Delivery'
+                      : 'Local Pickup'}
+                    <br />
+                    Lagos, Nigeria
+                  </p>
+                </div>
+
+                <div className="rounded-[12px] border border-[#e3e5e2] px-5 py-4">
+                  <p className="text-[0.76rem] font-bold uppercase tracking-[0.14em] text-[#626262]">
+                    Payment Method
+                  </p>
+                  <p className="mt-3 flex items-center gap-2 text-[0.9rem] text-[#202020]">
+                    <CreditCard className="h-4 w-4 text-[#626262]" />
+                    {paymentMethod === 'card'
+                      ? 'Visa **** 4242'
+                      : paymentMethod === 'apple-pay'
+                        ? 'Apple Pay'
+                        : 'Google Pay'}
+                  </p>
+                  <p className="mt-7 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-[#047a36]">
+                    Receipt Generated
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleReturnToShop}
+                className="mt-8 flex w-full items-center justify-center gap-4 rounded-[12px] bg-[#047a36] px-5 py-4 text-[1rem] font-semibold text-white shadow-[0_14px_28px_rgba(4,122,54,0.22)] transition hover:bg-[#03682e]"
+              >
+                Return to Shop
+                <ArrowRight className="h-5 w-5" />
+              </button>
+
+              <p className="mt-4 text-center text-[0.86rem] text-[#626262]">
+                Need help?{' '}
+                <span className="font-semibold text-[#047a36]">
+                  Contact Support
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       {isNewsletterOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#101710]/45 px-4 backdrop-blur-[2px]">
           <div className="w-full max-w-[440px] rounded-[24px] bg-white p-5 shadow-[0_24px_70px_rgba(16,23,16,0.22)] md:p-6">
@@ -454,7 +633,7 @@ function Checkout({
 
               <button
                 type="button"
-                onClick={() => setNewsletterOpenState(false)}
+                onClick={handleSkipNewsletter}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#dde8d8] text-[#667060] transition hover:border-[#b9cbb4] hover:text-[#2f7f37]"
                 aria-label="Close newsletter modal"
               >
@@ -471,8 +650,12 @@ function Checkout({
                   You&apos;re subscribed
                 </h4>
                 <p className="mt-2 text-[0.84rem] leading-6 text-[#5f6756]">
-                  We&apos;ll send product updates, newsletters, and special offers to{' '}
-                  <span className="font-medium text-[#2f7f37]">{trimmedEmail}</span>.
+                  We&apos;ll send product updates, newsletters, and special
+                  offers to{' '}
+                  <span className="font-medium text-[#2f7f37]">
+                    {trimmedEmail}
+                  </span>
+                  .
                 </p>
                 <button
                   type="button"
@@ -485,8 +668,8 @@ function Checkout({
             ) : (
               <form className="mt-5" onSubmit={handleNewsletterSubmit}>
                 <p className="text-[0.84rem] leading-6 text-[#5f6756]">
-                  Enter your email if you&apos;d like newsletters, new menu alerts, and
-                  special updates from 360 Foods.
+                  Enter your email if you&apos;d like newsletters, new menu
+                  alerts, and special updates from 360 Foods.
                 </p>
 
                 <label className="mt-4 block">
