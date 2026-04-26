@@ -1,5 +1,12 @@
 import BananaBread from '../assets/loaf-banana-bread-with-walnuts-peanuts.jpg'
-import ChocolateBread from '../assets/chocolate-bread.jpeg'
+// import ChocolateBread from '../assets/chocolate-bread.jpeg'
+import BananaCake from '../assets/banana-cake.jpeg'
+import Bread4 from '../assets/bread4.jpeg'
+import CoconutBreadMixfruits from '../assets/coconut-mixfruit.jpeg'
+import MoltenChocoBread from '../assets/molten-chocoBread.jpeg'
+import CoconutBread from '../assets/coconut-bread.jpeg'
+import OreoBread from '../assets/oreo-bread.jpeg'
+
 
 export const productCategories = [
   'All',
@@ -29,13 +36,24 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: 'banana-loaf',
-    name: 'Banana Loaf',
+    id: 'banana-cake',
+    name: 'Banana Cake',
+    weight: '1.7kg',
+    price: 40,
+    featured: true,
+    category: 'Cakes',
+    imageSrc: BananaCake,
+    imageAlt: 'Banana cake loaf ',
+  },
+  {
+    id: 'coconut-loaf',
+    name: 'Coconut bread',
     weight: '1.9kg',
     price: 34,
+    featured: true,
     category: 'Bread',
-    imageSrc: BananaBread,
-    imageAlt: 'Loaf banana bread with walnuts and peanuts',
+    imageSrc: CoconutBread,
+    imageAlt: 'Coconut bread',
   },
   {
     id: 'cheese-pie',
@@ -46,26 +64,39 @@ export const products: Product[] = [
     accent: true,
     category: 'Pie',
     imageSrc: BananaBread,
-    imageAlt: 'Black forest pie loaf placeholder',
+    imageAlt: 'Black forest pie loaf ',
   },
   {
-    id: 'chocolate-cake',
-    name: 'chocolate cake',
+    id: 'molten-chocolate-bread',
+    name: 'Molten Chocolate Bread',
+    weight: '1.9kg',
+    price: 38,
+    featured: true,
+    accent: true,
+    category: 'Bread',
+    imageSrc: MoltenChocoBread,
+    imageAlt: 'Molten chocolate bread ',
+  },
+  {
+    id: ' coconut-mix-fruit-bread',
+    name: 'Coconut Mix Fruit Bread',
     weight: '1.7kg',
     price: 40,
-    category: 'Cakes',
-    imageSrc: BananaBread,
-    imageAlt: 'Strawberry cake loaf placeholder',
+    featured: true,
+    category: 'Bread',
+    imageSrc: CoconutBreadMixfruits,
+    imageAlt: 'Coconut mix fruit bread ',
   },
   {
-    id: 'italian-sponge',
-    name: 'Italian Sponge',
+    id: 'Bread-4',
+    name: 'Short Bread',
     weight: '4kg',
     price: 57.5,
+    featured: true,
     accent: true,
-    category: 'Cakes',
-    imageSrc: BananaBread,
-    imageAlt: 'Italian sponge loaf placeholder',
+    category: 'Bread',
+    imageSrc: Bread4,
+    imageAlt: 'Short bread',
   },
   {
     id: 'zobo-drink',
@@ -77,12 +108,13 @@ export const products: Product[] = [
     imageAlt: 'Green detox drink placeholder',
   },
   {
-    id: 'chocolate-bread',
-    name: 'Chocolate Bread',
+    id: 'Oreo-bread',
+    name: 'Oreo Bread',
     weight: '1.9kg',
     price: 34,
+    featured: true,
     category: 'Bread',
-    imageSrc: ChocolateBread,
-    imageAlt: 'ChocolateBread',
+    imageSrc: OreoBread,
+    imageAlt: 'Oreo bread',
   },
 ]
