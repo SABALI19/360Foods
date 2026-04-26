@@ -3,6 +3,7 @@ import ChocolateBread from '../assets/chocolate-bread.jpeg'
 
 export const productCategories = [
   'All',
+  'Breakfast',
   'Bread',
   'Pie',
   'Cakes',

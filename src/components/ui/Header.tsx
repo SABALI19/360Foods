@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { productCategories, type ProductCategory } from '../../data/catalog'
 import brandLogo from '../../assets/360foods-logo-circle-of-flavor.png'
 import Cart from './cart/Cart'
@@ -31,9 +32,28 @@ function Header({
   onCartClick,
   onCategoryChange,
 }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 48)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <header className="w-full overflow-hidden border border-[rgba(15,23,15,0.08)] bg-[rgba(5,189,88,0.96)] shadow-[0_22px_50px_rgba(20,33,20,0.08)]">
-      <div className="grid min-h-[138px] grid-cols-1 place-items-center gap-5 px-[18px] py-[22px] md:grid-cols-[auto_1fr_auto] md:items-center md:gap-6 md:px-[42px] md:pt-6 md:pb-[18px]">
+    <header className="sticky top-0 z-40 w-full overflow-hidden border border-[rgba(15,23,15,0.08)] bg-[rgba(5,189,88,0.96)] shadow-[0_22px_50px_rgba(20,33,20,0.08)] transition-all duration-300">
+      <div
+        className={`grid grid-cols-1 place-items-center px-[18px] transition-all duration-300 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-6 md:px-[42px] ${
+          isScrolled
+            ? 'min-h-[92px] gap-3 py-3 md:pt-3 md:pb-3'
+            : 'min-h-[138px] gap-5 py-[22px] md:pt-6 md:pb-[18px]'
+        }`}
+      >
         <button
           type="button"
           className="h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(20,33,20,0.12)] bg-white p-0 text-[#111111] transition duration-200 hover:-translate-y-px hover:border-[rgba(28,107,47,0.28)] hover:text-[#1c6b2f] hover:shadow-[0_10px_24px_rgba(28,107,47,0.12)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2e7d32] hidden md:inline-flex"
@@ -43,7 +63,9 @@ function Header({
         </button>
 
         <div
-          className="relative isolate flex h-32 w-32 justify-self-center overflow-hidden rounded-full text-center"
+          className={`relative isolate flex justify-self-center overflow-hidden rounded-full text-center transition-all duration-300 ${
+            isScrolled ? 'h-20 w-20 md:h-24 md:w-24' : 'h-32 w-32'
+          }`}
           aria-label="360Foods"
         >
           <img
@@ -71,14 +93,16 @@ function Header({
       </div>
 
       <nav
-        className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-4 pt-4 pb-[18px] md:gap-x-[clamp(14px,3vw,42px)] md:px-6"
+        className={`flex flex-nowrap items-center justify-start gap-x-5 overflow-x-auto overscroll-x-contain border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-4 transition-all duration-300 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] md:justify-center md:gap-x-[clamp(14px,3vw,42px)] md:px-6 [&::-webkit-scrollbar]:hidden ${
+          isScrolled ? 'pt-2 pb-3' : 'pt-4 pb-[18px]'
+        }`}
         aria-label="Primary"
       >
         {productCategories.map((category) => (
           <button
             key={category}
             type="button"
-            className={`relative px-0.5 py-1 text-base font-medium no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2e7d32] ${
+            className={`relative flex-none whitespace-nowrap px-0.5 py-1 text-base font-medium no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2e7d32] ${
               activeCategory === category
                 ? "text-[#2e7d32] after:absolute after:right-0 after:bottom-[-1px] after:left-0 after:h-0.5 after:rounded-full after:bg-current after:content-['']"
                 : "text-[rgba(17,17,17,0.84)] hover:text-[#2e7d32] hover:after:absolute hover:after:right-0 hover:after:bottom-[-1px] hover:after:left-0 hover:after:h-0.5 hover:after:rounded-full hover:after:bg-current hover:after:content-['']"
