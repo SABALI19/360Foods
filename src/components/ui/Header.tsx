@@ -1,4 +1,5 @@
 import { productCategories, type ProductCategory } from '../../data/catalog'
+import brandLogo from '../../assets/360foods-logo-circle-of-flavor.png'
 import Cart from './cart/Cart'
 
 type HeaderProps = {
@@ -42,30 +43,14 @@ function Header({
         </button>
 
         <div
-          className="relative isolate flex justify-self-center px-4 text-center"
+          className="relative isolate flex h-32 w-32 justify-self-center overflow-hidden rounded-full text-center"
           aria-label="360Foods"
         >
-          <span
-            className="absolute top-1/2 left-1/2 -z-10 h-28 w-28 -translate-x-1/2 -translate-y-[44%] rounded-full border border-[rgba(17,17,17,0.08)] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.24),transparent_62%),linear-gradient(145deg,rgba(255,255,255,0.2),rgba(0,0,0,0.02))]"
-            aria-hidden="true"
-          ></span>
-          <div className="flex flex-col items-center">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="h-px w-8 bg-[#2e7d32]/75 md:w-10"></span>
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2e7d32]"></span>
-              <span className="h-px w-8 bg-[#2e7d32]/75 md:w-10"></span>
-            </div>
-            <h1 className="m-0 text-[clamp(1.15rem,5.8vw,1.55rem)] leading-none font-black tracking-[0.34em] text-[#111111] [text-indent:0.34em] md:text-[clamp(1.5rem,2.3vw,2rem)] md:tracking-[0.48em] md:[text-indent:0.48em]">
-              360 FOODS
-            </h1>
-            <div className="mt-2 h-px w-28 bg-[#111111]/20 md:w-36"></div>
-            <p className="mt-2 text-[0.74rem] font-medium uppercase tracking-[0.3em] text-[#2e7d32] md:text-[0.78rem]">
-              Gluten Free
-            </p>
-            <p className="mt-1 text-[0.82rem] font-medium tracking-[0.18em] text-[#111111]/55">
-              express delivery
-            </p>
-          </div>
+          <img
+            src={brandLogo}
+            alt="360Foods Circle of Flavor"
+            className="h-full w-full scale-110 rounded-full border object-cover shadow-md"
+          />
         </div>
 
         <div className="hidden md:block">

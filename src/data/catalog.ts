@@ -1,4 +1,5 @@
 import BananaBread from '../assets/loaf-banana-bread-with-walnuts-peanuts.jpg'
+import ChocolateBread from '../assets/chocolate-bread.jpeg'
 
 export const productCategories = [
   'All',
@@ -6,6 +7,9 @@ export const productCategories = [
   'Pie',
   'Cakes',
   'Drinks',
+  'Pastry',
+  'Salad',
+  'Lunch Pack',
 ] as const
 
 export type ProductCategory = (typeof productCategories)[number]
@@ -70,5 +74,14 @@ export const products: Product[] = [
     category: 'Drinks',
     imageSrc: BananaBread,
     imageAlt: 'Green detox drink placeholder',
+  },
+  {
+    id: 'chocolate-bread',
+    name: 'Chocolate Bread',
+    weight: '1.9kg',
+    price: 34,
+    category: 'Bread',
+    imageSrc: ChocolateBread,
+    imageAlt: 'ChocolateBread',
   },
 ]

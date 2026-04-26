@@ -20,7 +20,10 @@ function Footer() {
           ))}
         </nav>
         <p className="mt-4 text-[0.75rem] text-[#111111]/38">
-          2016 360 Foods. All rights reserved
+          2026 360Foods. All rights reserved
+        </p>
+        <p className="mt-4 text-[0.75rem] text-[#111111]/38">
+          
         </p>
       </div>
     </footer>

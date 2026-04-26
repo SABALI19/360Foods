@@ -42,3 +42,17 @@ button {
 #root {
   min-height: 100svh;
 }
+
+@keyframes splash-logo-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.splash-logo-spin {
+  animation: splash-logo-rotate 1.6s linear infinite;
+}
