@@ -436,9 +436,11 @@ function Checkout({
         </div>
       </div>
 
+
+{/* order Reciepts  */}
       {isReceiptOpen ? (
         <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#101710]/45 px-4 py-6 backdrop-blur-[2px] md:py-8">
-          <div className="w-full max-w-[620px] overflow-hidden rounded-[16px] bg-white shadow-[0_30px_90px_rgba(16,23,16,0.28)]">
+          <div className="w-full max-w-[620px] overflow-hidden  bg-white shadow-[0_30px_90px_rgba(16,23,16,0.28)]">
             <div className="flex items-center justify-between border-b border-b-[#edf1e8] px-5 py-4 md:px-7">
               <h3 className="text-[1.2rem] font-bold text-[#101510]">
                 Checkout
@@ -490,12 +492,12 @@ function Checkout({
                     <Truck className="h-4 w-4" />
                   </span>
                   <span className="text-[0.82rem] font-semibold text-[#616161]">
-                    Shipped
+                    Delivery 
                   </span>
                 </div>
               </div>
 
-              <div className="mt-8 overflow-hidden rounded-[12px] bg-[#f1f1f2]">
+              <div className="mt-8 overflow-hidden  bg-[#f1f1f2]">
                 <div className="flex items-center justify-between bg-[#e9e9ea] px-5 py-4">
                   <p className="text-[0.78rem] font-bold uppercase tracking-[0.18em] text-[#565656]">
                     Summary
@@ -589,7 +591,7 @@ function Checkout({
               <button
                 type="button"
                 onClick={handleReturnToShop}
-                className="mt-8 flex w-full items-center justify-center gap-4 rounded-[12px] bg-[#047a36] px-5 py-4 text-[1rem] font-semibold text-white shadow-[0_14px_28px_rgba(4,122,54,0.22)] transition hover:bg-[#03682e]"
+                className="mt-8 flex w-full items-center justify-center gap-4  bg-[#047a36] px-5 py-4 text-[1rem] font-semibold text-white shadow-[0_14px_28px_rgba(4,122,54,0.22)] transition hover:bg-[#03682e]"
               >
                 Return to Shop
                 <ArrowRight className="h-5 w-5" />
@@ -607,18 +609,18 @@ function Checkout({
       ) : null}
 
       {isNewsletterOpen ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#101710]/45 px-4 backdrop-blur-[2px]">
-          <div className="w-full max-w-[440px] rounded-[24px] bg-white p-5 shadow-[0_24px_70px_rgba(16,23,16,0.22)] md:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#edf7eb] text-[#2f7f37]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#101710]/45 px-3 py-6 backdrop-blur-[2px] sm:px-4">
+          <div className="max-h-full w-full max-w-[min(440px,calc(100vw-24px))] overflow-y-auto bg-white p-4 shadow-[0_24px_70px_rgba(16,23,16,0.22)] sm:p-5 md:max-w-[480px] md:p-6">
+            <div className="flex items-start justify-between gap-3 sm:gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#edf7eb] text-[#2f7f37] sm:h-11 sm:w-11">
                   <Mail className="h-5 w-5" />
                 </span>
-                <div>
-                  <p className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#2f7f37]">
+                <div className="min-w-0">
+                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#2f7f37] sm:text-[0.74rem] sm:tracking-[0.22em]">
                     Stay Updated
                   </p>
-                  <h3 className="mt-1 text-[1.2rem] font-semibold text-[#182118]">
+                  <h3 className="mt-1 text-[1.05rem] font-semibold leading-tight text-[#182118] sm:text-[1.2rem]">
                     Receive newsletters by email?
                   </h3>
                 </div>
@@ -627,7 +629,7 @@ function Checkout({
               <button
                 type="button"
                 onClick={handleSkipNewsletter}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#dde8d8] text-[#667060] transition hover:border-[#b9cbb4] hover:text-[#2f7f37]"
+                className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full border border-[#dde8d8] text-[#667060] transition hover:border-[#b9cbb4] hover:text-[#2f7f37]"
                 aria-label="Close newsletter modal"
               >
                 <X className="h-4 w-4" />
@@ -635,14 +637,14 @@ function Checkout({
             </div>
 
             {newsletterSubscribed ? (
-              <div className="mt-5 rounded-[18px] bg-[#f4fbf2] px-4 py-5 text-center">
+              <div className="mt-5 bg-[#f4fbf2] px-3 py-5 text-center sm:px-4">
                 <span className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#2f7f37] text-white">
                   <Check className="h-5 w-5" strokeWidth={2.5} />
                 </span>
                 <h4 className="mt-3 text-[1rem] font-semibold text-[#1d241d]">
                   You&apos;re subscribed
                 </h4>
-                <p className="mt-2 text-[0.84rem] leading-6 text-[#5f6756]">
+                <p className="mt-2 break-words text-[0.82rem] leading-6 text-[#5f6756] sm:text-[0.84rem]">
                   We&apos;ll send product updates, newsletters, and special
                   offers to{' '}
                   <span className="font-medium text-[#2f7f37]">
@@ -653,14 +655,14 @@ function Checkout({
                 <button
                   type="button"
                   onClick={handleNewsletterContinue}
-                  className="mt-4 inline-flex items-center justify-center rounded-[10px] bg-[#2f7f37] px-4 py-2.5 text-[0.82rem] font-semibold text-white transition hover:bg-[#286d30]"
+                  className="mt-4 inline-flex w-full items-center justify-center bg-[#2f7f37] px-4 py-2.5 text-[0.82rem] font-semibold text-white transition hover:bg-[#286d30] sm:w-auto"
                 >
                   Continue
                 </button>
               </div>
             ) : (
               <form className="mt-5" onSubmit={handleNewsletterSubmit}>
-                <p className="text-[0.84rem] leading-6 text-[#5f6756]">
+                <p className="text-[0.82rem] leading-6 text-[#5f6756] sm:text-[0.84rem]">
                   Enter your email if you&apos;d like newsletters, new menu
                   alerts, and special updates from 360 Foods.
                 </p>
@@ -675,7 +677,7 @@ function Checkout({
                     onChange={(event) => setNewsletterEmail(event.target.value)}
                     onBlur={() => setNewsletterTouched(true)}
                     placeholder="you@example.com"
-                    className="w-full rounded-[12px] border border-[#d7e3d1] bg-[#f7fbf4] px-4 py-3 text-[0.86rem] text-[#1f261e] outline-none transition placeholder:text-[#98a18f] focus:border-[#2f7f37] focus:bg-white"
+                    className="w-full border border-[#d7e3d1] bg-[#f7fbf4] px-3 py-3 text-[0.86rem] text-[#1f261e] outline-none transition placeholder:text-[#98a18f] focus:border-[#2f7f37] focus:bg-white sm:px-4"
                   />
                 </label>
 
@@ -685,17 +687,17 @@ function Checkout({
                   </p>
                 ) : null}
 
-                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   <button
                     type="submit"
-                    className="inline-flex flex-1 items-center justify-center rounded-[12px] bg-[#2f7f37] px-4 py-3 text-[0.84rem] font-semibold text-white transition hover:bg-[#286d30]"
+                    className="inline-flex min-h-11 items-center justify-center bg-[#2f7f37] px-4 py-3 text-[0.84rem] font-semibold text-white transition hover:bg-[#286d30]"
                   >
                     Subscribe
                   </button>
                   <button
                     type="button"
                     onClick={handleSkipNewsletter}
-                    className="inline-flex flex-1 items-center justify-center rounded-[12px] border border-[#d7e3d1] px-4 py-3 text-[0.84rem] font-semibold text-[#4e5849] transition hover:border-[#b8c9b4] hover:text-[#2f7f37]"
+                    className="inline-flex min-h-11 items-center justify-center border border-[#d7e3d1] px-4 py-3 text-[0.84rem] font-semibold text-[#4e5849] transition hover:border-[#b8c9b4] hover:text-[#2f7f37]"
                   >
                     No thanks
                   </button>
