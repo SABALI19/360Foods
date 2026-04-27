@@ -1,4 +1,11 @@
+import { useEffect, useState } from 'react'
 import { products, type ProductCategory } from '../../../data/catalog'
+
+type PreviewImage = {
+  alt: string
+  name: string
+  src: string
+}
 
 type CardProps = {
   activeCategory: ProductCategory
@@ -36,6 +43,8 @@ function PlusIcon() {
 }
 
 function Card({ activeCategory, cartItems, onAddToCart }: CardProps) {
+  const [previewImage, setPreviewImage] = useState<PreviewImage | null>(null)
+
   const filteredProducts =
     activeCategory === 'All'
       ? products
@@ -45,6 +54,20 @@ function Card({ activeCategory, cartItems, onAddToCart }: CardProps) {
     style: 'currency',
     currency: 'USD',
   })
+
+  useEffect(() => {
+    if (!previewImage) {
+      return
+    }
+
+    function handleScroll() {
+      setPreviewImage(null)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [previewImage])
 
   return (
     <section className="w-full px-5 py-8 md:px-8 md:py-12">
@@ -97,11 +120,24 @@ function Card({ activeCategory, cartItems, onAddToCart }: CardProps) {
             <div className="mt-2 flex flex-1 items-center justify-center">
               <div className="h-[150px] w-full max-w-[220px]">
                 {product.imageSrc ? (
-                  <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
-                    className="h-full w-full object-contain"
-                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setPreviewImage({
+                        alt: product.imageAlt,
+                        name: product.name,
+                        src: product.imageSrc ?? '',
+                      })
+                    }
+                    className="h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2e7d32]"
+                    aria-label={`View larger image of ${product.name}`}
+                  >
+                    <img
+                      src={product.imageSrc}
+                      alt={product.imageAlt}
+                      className="h-full w-full object-contain transition duration-200 group-hover:scale-[1.03]"
+                    />
+                  </button>
                 ) : (
                   <div className="flex h-full w-full items-center justify-center rounded-2xl bg-[#f3f9f3] text-sm font-medium text-[#2e7d32]">
                     Upload product image
@@ -145,6 +181,42 @@ function Card({ activeCategory, cartItems, onAddToCart }: CardProps) {
           )
         })}
       </div>
+
+      {previewImage ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#101710]/55 px-4 py-6 backdrop-blur-[2px]"
+          onClick={() => setPreviewImage(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${previewImage.name} image preview`}
+        >
+          <div
+            className="max-h-[82svh] w-full max-w-[620px] overflow-hidden rounded-[14px] bg-white p-4 shadow-[0_30px_90px_rgba(16,23,16,0.28)]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-4 pb-3">
+              <p className="min-w-0 truncate text-[0.95rem] font-semibold text-[#172017]">
+                {previewImage.name}
+              </p>
+              <button
+                type="button"
+                onClick={() => setPreviewImage(null)}
+                className="inline-flex h-8 w-8 flex-none items-center justify-center rounded-full border border-[#d7e3d1] text-[#4e5849] transition hover:border-[#2e7d32] hover:text-[#2e7d32]"
+                aria-label="Close image preview"
+              >
+                x
+              </button>
+            </div>
+            <div className="flex max-h-[70svh] items-center justify-center rounded-[10px] bg-[#f7fbf7] p-3">
+              <img
+                src={previewImage.src}
+                alt={previewImage.alt}
+                className="max-h-[66svh] w-full object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   )
 }
