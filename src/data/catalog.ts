@@ -5,7 +5,7 @@ import Bread4 from '../assets/bread4.jpeg'
 import CoconutBreadMixfruits from '../assets/coconut-mixfruit.jpeg'
 import MoltenChocoBread from '../assets/molten-chocoBread.jpeg'
 import CoconutBread from '../assets/coconut-bread.jpeg'
-import OreoBread from '../assets/oreo-bread.jpeg'
+import OreoBread from '../assets/Oreo-Bread.jpeg'
 
 
 export const productCategories = [
