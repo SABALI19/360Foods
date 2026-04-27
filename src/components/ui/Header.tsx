@@ -38,14 +38,23 @@ function Header({
   )
 
   useEffect(() => {
+    let animationFrameId = 0
+
     function handleScroll() {
-      setIsScrolled(window.scrollY > 48)
+      cancelAnimationFrame(animationFrameId)
+
+      animationFrameId = window.requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 48)
+      })
     }
 
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   function getCategoryButtonClass(category: ProductCategory) {
@@ -57,11 +66,17 @@ function Header({
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full overflow-hidden border border-[rgba(15,23,15,0.08)] bg-[rgba(5,189,88,0.96)] shadow-[0_22px_50px_rgba(20,33,20,0.08)] transition-all duration-300">
+    <header
+      className={`sticky top-0 z-40 w-full overflow-hidden border border-[rgba(15,23,15,0.08)] bg-[rgba(5,189,88,0.96)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        isScrolled
+          ? 'shadow-[0_14px_36px_rgba(20,33,20,0.14)] backdrop-blur-md'
+          : 'shadow-[0_22px_50px_rgba(20,33,20,0.08)]'
+      }`}
+    >
       <div
-        className={`grid grid-cols-1 place-items-center px-[18px] transition-all duration-300 md:grid-cols-[auto_1fr_auto] md:items-center md:gap-6 md:px-[42px] ${
+        className={`grid grid-cols-1 place-items-center px-[18px] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:grid-cols-[auto_1fr_auto] md:items-center md:gap-6 md:px-[42px] ${
           isScrolled
-            ? 'min-h-[92px] gap-3 py-3 md:pt-3 md:pb-3'
+            ? 'min-h-[82px] gap-2 py-2 md:min-h-[86px] md:pt-2 md:pb-2'
             : 'min-h-[138px] gap-5 py-[22px] md:pt-6 md:pb-[18px]'
         }`}
       >
@@ -74,15 +89,17 @@ function Header({
         </button>
 
         <div
-          className={`relative isolate flex justify-self-center overflow-hidden rounded-full text-center transition-all duration-300 ${
-            isScrolled ? 'h-20 w-20 md:h-24 md:w-24' : 'h-32 w-32'
+          className={`relative isolate flex justify-self-center overflow-hidden rounded-full text-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            isScrolled ? 'h-16 w-16 md:h-20 md:w-20' : 'h-32 w-32'
           }`}
           aria-label="360Foods"
         >
           <img
             src={brandLogo}
             alt="360Foods Circle of Flavor"
-            className="h-full w-full scale-110 rounded-full border object-cover shadow-md"
+            className={`h-full w-full rounded-full border object-cover shadow-md transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              isScrolled ? 'scale-105' : 'scale-110'
+            }`}
           />
         </div>
 
@@ -104,7 +121,7 @@ function Header({
       </div>
 
       <nav
-        className={`flex items-center border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] transition-all duration-300 md:hidden ${
+        className={`flex items-center border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden ${
           isScrolled ? 'pt-2 pb-3' : 'pt-4 pb-[18px]'
         }`}
         aria-label="Primary"
@@ -134,7 +151,7 @@ function Header({
       </nav>
 
       <nav
-        className={`hidden flex-nowrap items-center justify-center gap-x-[clamp(14px,3vw,42px)] overflow-x-auto overscroll-x-contain border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-6 transition-all duration-300 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] md:flex [&::-webkit-scrollbar]:hidden ${
+        className={`hidden flex-nowrap items-center justify-center gap-x-[clamp(14px,3vw,42px)] overflow-x-auto overscroll-x-contain border-t border-t-[rgba(17,17,17,0.06)] bg-[linear-gradient(180deg,#f3f7f1_0%,#edf3eb_100%)] px-6 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] [-webkit-overflow-scrolling:touch] [scrollbar-width:none] md:flex [&::-webkit-scrollbar]:hidden ${
           isScrolled ? 'pt-2 pb-3' : 'pt-4 pb-[18px]'
         }`}
         aria-label="Primary"

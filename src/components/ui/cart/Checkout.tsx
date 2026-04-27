@@ -213,15 +213,16 @@ function Checkout({
               </div>
             </div>
 
-            <div className="rounded-[14px] border border-[#dce7d2] bg-white/85 p-4 shadow-[0_8px_24px_rgba(47,127,55,0.04)]">
+            <div className=" border border-[#dce7d2] bg-white/85 p-4 shadow-[0_8px_24px_rgba(47,127,55,0.04)]">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-[1.02rem] font-semibold text-[#1d241d]">
                   Payment Method
                 </h2>
                 <div className="flex items-center gap-1.5">
-                  <span className="h-3 w-5 rounded-[3px] bg-[#ced8c1]"></span>
+                  <CreditCard  className='text-gray-600'/>
+                  {/* <span className="h-3 w-5 rounded-[3px] bg-[#ced8c1]"></span>
                   <span className="h-3 w-5 rounded-[3px] bg-[#dde6d2]"></span>
-                  <span className="h-3 w-5 rounded-[3px] bg-[#2f7f37]"></span>
+                  <span className="h-3 w-5 rounded-[3px] bg-[#2f7f37]"></span> */}
                 </div>
               </div>
 
@@ -230,34 +231,26 @@ function Checkout({
                   type="button"
                   onClick={() => setPaymentMethod('apple-pay')}
                   aria-pressed={paymentMethod === 'apple-pay'}
-                  className={`flex items-center justify-center gap-2 rounded-[10px] px-3 py-3 text-[0.8rem] font-medium transition ${
+                  className={`flex items-center justify-center gap-2  px-3 py-3 text-[0.8rem] font-medium transition ${
                     paymentMethod === 'apple-pay'
                       ? 'border border-[#58a45f] bg-[#f4fbf2] text-[#203020]'
                       : 'border border-[#d9e2ce] bg-white text-[#2a2f28] hover:border-[#9fbea0]'
                   }`}
                 >
-                  <span
-                    className={`inline-flex h-4 w-4 items-center justify-center rounded-full text-[0.48rem] font-semibold ${
-                      paymentMethod === 'apple-pay'
-                        ? 'border border-[#2f7f37] text-[#2f7f37]'
-                        : 'border border-[#b8c5ab]'
-                    }`}
-                  >
-                    AP
-                  </span>
+                 
                   Apple Pay
                 </button>
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('google-pay')}
                   aria-pressed={paymentMethod === 'google-pay'}
-                  className={`flex items-center justify-center gap-2 rounded-[10px] px-3 py-3 text-[0.8rem] font-medium transition ${
+                  className={`flex items-center justify-center gap-2  px-3 py-3 text-[0.8rem] font-medium transition ${
                     paymentMethod === 'google-pay'
                       ? 'border border-[#58a45f] bg-[#f4fbf2] text-[#203020]'
                       : 'border border-[#d9e2ce] bg-white text-[#2a2f28] hover:border-[#9fbea0]'
                   }`}
                 >
-                  <span
+                  {/* <span
                     className={`inline-flex h-4 w-4 items-center justify-center rounded-[4px] text-[0.55rem] ${
                       paymentMethod === 'google-pay'
                         ? 'border border-[#2f7f37] text-[#2f7f37]'
@@ -265,7 +258,7 @@ function Checkout({
                     }`}
                   >
                     G
-                  </span>
+                  </span> */}
                   Google Pay
                 </button>
               </div>
@@ -351,7 +344,7 @@ function Checkout({
             </div>
           </div>
 
-          <aside className="rounded-[14px] border border-[#dce7d2] bg-[rgba(252,253,248,0.9)] p-4 shadow-[0_8px_24px_rgba(47,127,55,0.04)]">
+          <aside className=" border border-[#dce7d2] bg-[rgba(252,253,248,0.9)] p-4 shadow-[0_8px_24px_rgba(47,127,55,0.04)]">
             <h2 className="text-[1.02rem] font-semibold text-[#1d241d]">
               Order Summary
             </h2>
@@ -426,13 +419,13 @@ function Checkout({
               type="button"
               disabled={orderedProducts.length === 0}
               onClick={handleCompleteOrder}
-              className="mt-5 flex w-full items-center justify-center gap-2 rounded-[10px] bg-[#2f7f37] px-4 py-3 text-[0.82rem] font-semibold text-white transition hover:bg-[#286d30] disabled:cursor-not-allowed disabled:bg-[#a6bba4]"
+              className="mt-5 flex w-full items-center justify-center gap-2  bg-[#2f7f37] px-4 py-3 text-[0.82rem] font-semibold text-white transition hover:bg-[#286d30] disabled:cursor-not-allowed disabled:bg-[#a6bba4]"
             >
               <LockKeyhole className="h-4 w-4" />
               Complete Order
             </button>
 
-            <div className="mt-4 flex items-start gap-2 rounded-[10px] bg-[#f4f8ee] px-3 py-3 text-[0.72rem] leading-5 text-[#6e7565]">
+            <div className="mt-4 flex items-start gap-2  bg-[#f4f8ee] px-3 py-3 text-[0.72rem] leading-5 text-[#6e7565]">
               <MapPinHouse className="mt-0.5 h-4 w-4 shrink-0 text-[#2f7f37]" />
               <p>
                 By placing your order, you agree to our Terms of Service and
